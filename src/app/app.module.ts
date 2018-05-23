@@ -1,9 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AppComponent } from './app.component';
-import { EditEventComponent } from './edit-event/edit-event.component';
+import { EditEventComponent } from './components/edit-event/edit-event.component';
+import { environment } from '../environments/environment';
+import { DataService } from './services/data.service';
 
 const appRoutes: Routes = [
   { path: 'edit-events', component: EditEventComponent },
@@ -24,7 +29,12 @@ const appRoutes: Routes = [
       appRoutes,
       { enableTracing: true } // <-- debugging purposes only
     ),
-    BrowserModule
+    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase, 'event-calendar-admin'),
+    AngularFireStorageModule,
+    AngularFirestoreModule,
+    AngularFireDatabaseModule,
+    DataService
   ],
   providers: [],
   bootstrap: [AppComponent]
