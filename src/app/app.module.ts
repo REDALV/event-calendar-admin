@@ -9,32 +9,41 @@ import { AppComponent } from './app.component';
 import { EditEventComponent } from './components/edit-event/edit-event.component';
 import { environment } from '../environments/environment';
 import { DataService } from './services/data.service';
+import { EventsComponent } from './components/events/events.component';
+import { EventsListComponent } from './components/events-list/events-list.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 
 const appRoutes: Routes = [
-  { path: 'edit-events', component: EditEventComponent },
+  { path: 'events', component: EventsComponent },
   { path: '',
-    redirectTo: '/edit-events',
+    redirectTo: '/events',
     pathMatch: 'full'
   },
-  { path: '**', component: EditEventComponent }
+  { path: '**', component: EventsComponent }
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
-    EditEventComponent
+    EditEventComponent,
+    EventsComponent,
+    EventsListComponent
   ],
   imports: [
     RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      appRoutes
     ),
+    FormsModule,
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase, 'event-calendar-admin'),
     AngularFireStorageModule,
     AngularFirestoreModule,
     AngularFireDatabaseModule,
-    DataService
+    DataService,
+    BrowserAnimationsModule,
+    NgxMyDatePickerModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

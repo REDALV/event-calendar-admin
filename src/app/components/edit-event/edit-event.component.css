@@ -1,0 +1,8 @@
+label.form-check-label{
+    padding-left: 0px;
+    margin-right: 40px;
+}
+
+input[readonly] {
+    background-color: white;
+  }

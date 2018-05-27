@@ -1,3 +1,77 @@
-<p>
-  edit-event works!
-</p>
+<form #eventForm="ngForm" (ngSubmit)="onSubmit(eventForm)">
+  <input type="hidden" name="$key" #$key [(ngModel)]="dataService.selectedEvent.$key">
+
+<!-- Название -->
+<div class="form-group">
+  <label>Название</label>
+  <input class="form-control" name="name" #name="ngModel" [(ngModel)]="dataService.selectedEvent.name" placeholder="Название">
+</div>
+
+<!-- Место -->
+<div class="form-group">
+  <label>Место</label>
+  <input class="form-control" name="address" #address="ngModel" [(ngModel)]="dataService.selectedEvent.address" placeholder="Место">
+</div>
+
+<!-- Статья -->
+<div class="form-group">
+  <label>Статья</label>
+  <textarea class="form-control" name="article" #article="ngModel" [(ngModel)]="dataService.selectedEvent.article" placeholder="Статья"></textarea>
+</div>
+
+<!-- Категория события -->
+<div class="form-group">
+  <label>Категория</label>
+  <select class="form-control" type="number" name="type" #type="ngModel" [(ngModel)]="dataService.selectedEvent.type">
+      <option [ngValue]="type.id" *ngFor="let type of eventTypes">  
+          {{type.name}}  
+   </option>
+  </select>
+</div>
+
+<!-- Уведомить пользователей о данном событии -->
+<div class="form-check">
+  <label class="form-check-label" for="isImportant">Уведомить пользователей о данном событии?</label>
+  <input class="form-check-input" type="checkbox" name="isImportant" #isImportant="ngModel" [(ngModel)]="dataService.selectedEvent.isImportant">
+</div>
+
+<!-- Даты -->
+<div class="form-group"><label>Дата</label>
+  <div class="input-group" style="width: 250px;">
+      <input class="form-control"  placeholder="Дата" readonly name="mydateshow"
+      [ngModel]="dataService.selectedEvent.date"/>
+      <input type="hidden" class="form-control"  placeholder="Select a date" ngx-mydatepicker name="mydate"
+                [(ngModel)]="dateModel" [options]="myOptions" #dp="ngx-mydatepicker" (dateChanged)="onDateChanged($event)"/>
+      <span class="input-group-addon" (click)="dp.toggleCalendar()">
+        <span class="fa fa-calendar" ></span>
+      </span>           
+  </div>
+  <div>-</div>
+  <div class="input-group" style="width: 287px;">
+      <input class="form-control"  placeholder="Дата окончания" readonly name="mydateEndshow"
+      [ngModel]="dataService.selectedEvent.dateEnd"/>
+      <input type="hidden" class="form-control"  placeholder="Дата окончания" ngx-mydatepicker name="mydateEnd"
+                [(ngModel)]="dateEndModel" [options]="myOptions" #dpEnd="ngx-mydatepicker" (dateChanged)="onDateEndChanged($event)"/>
+      <span class="input-group-addon" (click)="dpEnd.toggleCalendar()">
+        <span class="fa fa-calendar" ></span>
+      </span>
+      <span class="input-group-addon" (click)="dpEnd.clearDate()">
+          <span class="fa fa-times" ></span>
+      </span>                 
+  </div>
+</div>
+
+
+
+
+<div class="form-group">
+  <button class="btn btn-default" type="submit" style="margin-right: 20px" >
+    <i class="fa fa-floppy-o"></i>
+     Submit</button>
+  <button class="btn btn-default" type="button" (click)="resetForm(eventForm)">
+    <i class="fa fa-repeat"></i>
+     Reset</button>
+</div>
+
+</form>
+
