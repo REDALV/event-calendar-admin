@@ -1,11 +1,31 @@
-<div class="text-center">
-  <h2 class="jumbotron">Event Calendar Admin</h2>
+<div class="row" style="margin-bottom: 20px">
+  <button class="btn btn-default" style="padding-left: 50px; margin-right: 20px;" (click)="logout()">
+    <i class="fa fa-sign-out "></i>
+        Выйти</button>
+
+  <button class="btn btn-default" style="padding-left: 50px" (click)="changeShowAdmins()" *ngIf="notActiveAdminsList.length > 0">
+          Подтвердить администраторов</button>
 </div>
-<div class="row">
-  <div class="col-md-4">
+
+<table class="table table-bordered" *ngIf="showAdminList" style="border-bottom-width: 4px; border-bottom-color: grey; width: 40%;">
+  <tr *ngFor="let admin of notActiveAdminsList" >
+      <td>{{admin.login}}</td>
+      <td>
+        <button class="btn btn-default" (click)="confirmAdmin(admin)">
+            <i class="fa fa-check "></i></button>
+      </td>
+      <td>
+          <button class="btn btn-default" (click)="dismissAdmin(admin)">
+              <i class="fa fa-ban "></i></button>
+      </td>
+  </tr>
+</table>
+
+<div class="row" style="width: 100%;">
+  <div class="col-md-5" style="padding-left: 40px">
     <app-events-list></app-events-list>
   </div>
-  <div class="col-md-8">
+  <div class="col-md-6" >
     <app-edit-event></app-edit-event>
   </div>
 </div>

@@ -1,4 +1,4 @@
-import { StringLike } from "@firebase/util";
+import { StringLike, forEach } from "@firebase/util";
 
 export class CityEvent {
 
@@ -7,7 +7,7 @@ export class CityEvent {
     article:string;
     date: string;
     dateEnd: string;
-    images: string[];
+    images: Array<string>;
     isImportant: boolean;
     lat: number;
     lng: number;
@@ -24,7 +24,12 @@ export class CityEvent {
             this.article = source.article;
             this.date = source.date;
             this.dateEnd = source.dateEnd;
-            this.images = source.images;
+            if(source.images == null){
+                this.images = [];
+            }
+            else{
+                this.images = Object.values(source.images);
+            }
             this.isImportant = source.isImportant;
             this.lat = source.lat;
             this.lng = source.lng;
@@ -34,5 +39,9 @@ export class CityEvent {
             this.timeEnd = source.timeEnd;
             this.type = source.type;
         }
-     }
+        else{
+            this.lat = 52.424195;
+            this.lng = 31.014671;
+        }
+    }
 }

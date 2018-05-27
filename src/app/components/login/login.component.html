@@ -1,0 +1,22 @@
+<h1 class="header">Вход в приложение</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <form [formGroup]="loginForm">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" formControlName="email" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Пароль</label>
+          <input type="password" class="form-control" formControlName="password">
+          <label class="error">{{errorMessage}}</label>
+        </div>
+        <button type="submit" (click)="tryLogin(loginForm.value)" class="btn btn-default">Войти</button>
+      </form>
+    </div>
+  </div>
+  <div class="form-inline" style="margin-top: 20px; padding-left: 0px">
+    <p>У вас нет аккаунта? <button (click)="goToRegister()" class="btn btn-default">Регистрация</button></p>
+  </div>
+</div>

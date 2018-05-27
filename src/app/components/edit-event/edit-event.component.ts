@@ -4,6 +4,7 @@ import { CityEvent } from '../../models/cityEvent';
 import { DataService } from '../../services/data.service';
 import { NgForm } from '@angular/forms';
 import { INgxMyDpOptions, IMyDateModel } from 'ngx-mydatepicker';
+import { AngularFireStorageReference } from 'angularfire2/storage';
 
 @Component({
   selector: 'app-edit-event',
@@ -12,7 +13,10 @@ import { INgxMyDpOptions, IMyDateModel } from 'ngx-mydatepicker';
 })
 export class EditEventComponent implements OnInit {
   event: CityEvent;
-  mytime: string;
+
+  showImages: boolean;
+  eventImages: Array<string>;
+  selectedImages: FileList;
 
   eventTypes=[
     { "id": 1,"name": "Спортивное мероприятие" },
@@ -28,18 +32,53 @@ export class EditEventComponent implements OnInit {
   dateModel: any;
   dateEndModel: any;
 
-  constructor(private dataService: DataService) { }
+  constructor(public dataService: DataService) { }
 
   ngOnInit() {
-    
+    this.dataService.selectedEvent = new CityEvent({
+      $key: null,
+      address: '',
+      article: '',
+      date: '',
+      dateEnd: '',
+      images: [],
+      isImportant: false,
+      lat: 52.424195,
+      lng: 31.014671,
+      name: '',
+      subtype: 0,
+      time: '',
+      timeEnd: '',
+      type: 1
+    });
   }
 
   onSubmit(eventForm: NgForm) {
-    /*if (eventForm.value.$key == null)
-      this.dataService.insertEmployee(eventForm.value);
-    else*/
+    if(this.isValidEvent()){
+      if (eventForm.value.$key == null){
+        this.dataService.lastEventKey = this.dataService.lastEventKey + 1;
+        this.dataService.selectedEvent.$key = String(this.dataService.lastEventKey);
+      }
       this.dataService.updateEvent(this.dataService.selectedEvent);
-    this.resetForm(eventForm);
+      this.resetForm(eventForm);
+    }
+    else{
+      alert('Обязательные поля помечены знаком *');
+    }
+  }
+  
+  isValidEvent():boolean{
+    if(this.dataService.selectedEvent.address == null || this.dataService.selectedEvent.address === "" )
+      return false;
+    if(this.dataService.selectedEvent.name == null || this.dataService.selectedEvent.name === "" )
+      return false;
+    if(this.dataService.selectedEvent.date == null || this.dataService.selectedEvent.date === "" )
+      return false;
+    if(this.dataService.selectedEvent.type == null)
+      return false;
+    if(this.dataService.selectedEvent.time == null || this.dataService.selectedEvent.time === "" )
+      return false;
+    return true;
   }
 
   resetForm(eventForm?: NgForm) {
@@ -51,16 +90,16 @@ export class EditEventComponent implements OnInit {
       article: '',
       date: '',
       dateEnd: '',
-      images: null,
-      isImportant: 0,
-      lat: 0,
-      lng: 0,
+      images: [],
+      isImportant: false,
+      lat: 52.424195,
+      lng: 31.014671,
       name: '',
       subtype: 0,
       time: '',
       timeEnd: '',
-      type: 0
-    })
+      type: 1
+    });
   }
 
   onDateChanged(event: IMyDateModel): void {
@@ -76,4 +115,37 @@ export class EditEventComponent implements OnInit {
     else
       this.dataService.selectedEvent.dateEnd = "";
   }
+
+  /**
+   * Dragging marker on map handler
+   * @param event - event
+   */
+  updateLocation($event) {
+    this.dataService.selectedEvent.lat = $event.coords.lat;
+    this.dataService.selectedEvent.lng = $event.coords.lng;
+  }
+
+  onShowImages(){
+    this.showImages = true;
+  }
+
+  deleteImage(imageSrc: string){
+    const index: number = this.dataService.selectedEvent.images.indexOf(imageSrc);
+    if (index !== -1) {
+      this.dataService.selectedEvent.images.splice(index, 1);
+    }  
+  }
+
+  selectImage(event){
+    this.selectedImages = event.target.files;
+  }
+
+  uploadSelectedImages(){
+    console.log(this.selectedImages.length);
+    for(let i=0; i<this.selectedImages.length; i++){
+      let file = this.selectedImages.item(i);
+      this.dataService.pushImageToStorage(file);
+    }
+  }
+
 }

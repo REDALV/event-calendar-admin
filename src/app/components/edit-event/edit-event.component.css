@@ -5,4 +5,24 @@ label.form-check-label{
 
 input[readonly] {
     background-color: white;
-  }
+}
+
+agm-map {
+    height: 300px;
+    width: 400px;
+}
+textarea{
+    height: 200px;
+}
+
+.form-control.textinput{
+     width: 700px;
+}
+
+image.event-image{
+    max-height: 150px;
+}
+
+table.image-list{
+    margin-bottom: 20px;
+}

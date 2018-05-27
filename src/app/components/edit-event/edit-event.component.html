@@ -3,26 +3,26 @@
 
 <!-- Название -->
 <div class="form-group">
-  <label>Название</label>
-  <input class="form-control" name="name" #name="ngModel" [(ngModel)]="dataService.selectedEvent.name" placeholder="Название">
+  <label>* Название:</label>
+  <input class="form-control textinput" name="name" #name="ngModel" [(ngModel)]="dataService.selectedEvent.name" placeholder="Название">
 </div>
 
 <!-- Место -->
 <div class="form-group">
-  <label>Место</label>
-  <input class="form-control" name="address" #address="ngModel" [(ngModel)]="dataService.selectedEvent.address" placeholder="Место">
+  <label>* Место:</label>
+  <input class="form-control textinput" name="address" #address="ngModel" [(ngModel)]="dataService.selectedEvent.address" placeholder="Место">
 </div>
 
 <!-- Статья -->
 <div class="form-group">
-  <label>Статья</label>
-  <textarea class="form-control" name="article" #article="ngModel" [(ngModel)]="dataService.selectedEvent.article" placeholder="Статья"></textarea>
+  <label>Статья:</label>
+  <textarea class="form-control textinput" name="article" #article="ngModel" [(ngModel)]="dataService.selectedEvent.article" placeholder="Статья"></textarea>
 </div>
 
 <!-- Категория события -->
 <div class="form-group">
-  <label>Категория</label>
-  <select class="form-control" type="number" name="type" #type="ngModel" [(ngModel)]="dataService.selectedEvent.type">
+  <label>Категория:</label>
+  <select class="form-control textinput" type="number" name="type" #type="ngModel" [(ngModel)]="dataService.selectedEvent.type">
       <option [ngValue]="type.id" *ngFor="let type of eventTypes">  
           {{type.name}}  
    </option>
@@ -36,8 +36,8 @@
 </div>
 
 <!-- Даты -->
-<div class="form-group"><label>Дата</label>
-  <div class="input-group" style="width: 250px;">
+<div class="form-inline" style="margin-bottom: 20px;"><label style="margin-right: 40px;">* Дата:</label>
+  <div class="input-group" style="width: 235px;">
       <input class="form-control"  placeholder="Дата" readonly name="mydateshow"
       [ngModel]="dataService.selectedEvent.date"/>
       <input type="hidden" class="form-control"  placeholder="Select a date" ngx-mydatepicker name="mydate"
@@ -46,8 +46,8 @@
         <span class="fa fa-calendar" ></span>
       </span>           
   </div>
-  <div>-</div>
-  <div class="input-group" style="width: 287px;">
+  <div style="margin-left: 20px; margin-right: 20px;">-</div>
+  <div class="input-group" style="width: 272px;">
       <input class="form-control"  placeholder="Дата окончания" readonly name="mydateEndshow"
       [ngModel]="dataService.selectedEvent.dateEnd"/>
       <input type="hidden" class="form-control"  placeholder="Дата окончания" ngx-mydatepicker name="mydateEnd"
@@ -61,16 +61,55 @@
   </div>
 </div>
 
+<!-- Время -->
+<div class="form-inline" style="margin-bottom: 20px;"><label style="margin-right: 31px;">* Время:</label>
+  <input class="form-control" type="time" name="time" style="width:150px;" atp-time-picker [(ngModel)]="dataService.selectedEvent.time"/>
+  <div style="margin-left: 20px; margin-right: 20px;">-</div>
+  <input class="form-control" type="time" name="timeEnd" style="width:150px;" atp-time-picker [(ngModel)]="dataService.selectedEvent.timeEnd"/>
+</div>
 
+<!-- Отметка на карте -->
+<div class="form-inline" style="margin-bottom: 20px;"> <label style="margin-right: 31px;">Отметка на карте:</label>
+    <agm-map [latitude]="dataService.selectedEvent.lat" [longitude]="dataService.selectedEvent.lng" [zoom]="17">
+        <agm-marker [latitude]="dataService.selectedEvent.lat" [longitude]="dataService.selectedEvent.lng" [markerDraggable]="true" (dragEnd)="updateLocation($event)"></agm-marker>
+    </agm-map>
+</div>
 
+<!-- Изображения -->
+<div class="form-group" *ngIf="!showImages">
+    <button class="btn btn-default" type="button" (click)="onShowImages()">
+      <i class="fa fa-images"></i>
+       Изображения</button>
+</div>
 
-<div class="form-group">
+<table class="table table-bordered imageList" *ngIf="showImages">
+  <caption style="caption-side: top;">Изображения</caption>
+  <tr>
+    <td>
+      <input name="newImage" type="file" accept="image/jpeg,image/png" (change)="selectImage($event)"/> 
+    </td>
+    <td>
+      <button class="btn btn-default" type="button" (click)="uploadSelectedImages($event)">
+          <i class="fa fa-upload"></i></button>
+    </td>
+  </tr>
+
+  <tr *ngFor="let imageSrc of this.dataService.selectedEvent.images">
+    <td>
+        <img class="event-image" [src]="imageSrc" style="max-height: 100px"/>
+    </td>
+    <td><button class="btn btn-default" type="button" (click)="deleteImage(imageSrc)">
+        <i class="fa fa-trash-o"></i></button></td>
+  </tr>
+</table>
+
+<div class="form-group" >
   <button class="btn btn-default" type="submit" style="margin-right: 20px" >
     <i class="fa fa-floppy-o"></i>
-     Submit</button>
+     Подтвердить</button>
   <button class="btn btn-default" type="button" (click)="resetForm(eventForm)">
     <i class="fa fa-repeat"></i>
-     Reset</button>
+     Сброс</button>
 </div>
 
 </form>

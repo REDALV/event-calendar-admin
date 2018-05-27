@@ -24,25 +24,21 @@ export class EventsListComponent implements OnInit {
         y['$key'] = item[i].key;
         this.eventsList.push(new CityEvent(y));
       }
-      /*
-      item.forEach(element => {
-        var y = element.payload.toJSON();
-        y['$key'] = element.key;
-        this.eventsList.push(new CityEvent(y));
-      });*/
-      console.log(this.eventsList);
+      this.dataService.lastEventKey = + this.eventsList[this.eventsList.length - 1].$key;
+      
+      console.log(this.dataService.lastEventKey);
     });
   }
 
   onDelete(key: string) {
-    if (confirm('Are you sure to delete this record ?') == true) {
+    if (confirm('Вы точно хотите удалить эту запись?') == true) {
       this.dataService.deleteEvent(key);
     }
   }
 
   onEdit(selectedEvent: CityEvent) {
     console.log(selectedEvent);
-    this.dataService.selectedEvent = Object.assign({}, selectedEvent);
+    Object.assign(this.dataService.selectedEvent, selectedEvent);
     console.log(this.dataService.selectedEvent);
   }
 

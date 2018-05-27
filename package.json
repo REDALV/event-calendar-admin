@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^1.0.0-beta.3",
     "@angular/animations": "^6.0.3",
     "@angular/common": "^6.0.2",
     "@angular/compiler": "^6.0.2",
@@ -27,6 +28,7 @@
     "ngx-mydatepicker": "^2.4.5",
     "ngx-toastr": "^8.7.3",
     "rxjs": "^6.0.0",
+    "rxjs-compat": "^6.2.0",
     "web-animations-js": "^2.3.1",
     "zone.js": "^0.8.26"
   },
