@@ -58,7 +58,7 @@ const appRoutes: Routes = [
     NgxMyDatePickerModule.forRoot(),
     AmazingTimePickerModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBpDz6qxS0XLtYYpB2mpQWTj72UZKu5lPE'
+      apiKey: ''
     })
   ],
   providers: [AuthService, UserService, AuthGuard],
